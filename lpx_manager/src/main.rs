@@ -12,8 +12,10 @@ use std::time::Duration;
 use std::error::Error;
 
 struct Adapter {
-    // Adapter changes the MIDI note and sends it to the synthesiser
-    // and sends colour change messages to the LPX
+    // Adapter receives MIDI notes from the LPX, changes them
+    // according the the asignments in `midi_map` herein and sends
+    // them to the synthesiser.   and sends colour change messages to the
+    // LPX
     midi_out_synth: MIDICommunicator<()>,
     midi_out_lpx: MIDICommunicator<()>,
     midi_map: [u8; 99], // key is MIDI from LPX value MIDI to synth
@@ -69,33 +71,33 @@ impl Adapter {
         root_note: u8, // Where the scale is rooted.  The MIDI note
     ) -> Self {
         let mut midi_map = [0_u8; 99];
+        let mut midi_note_to_pads = (0..99)
+            .map(|_| (None, None))
+            .collect::<Vec<(Option<u8>, Option<u8>)>>();
 
-        // `delta` + `p` is a midi signal
-        let p = 10;
+        // The layout of the notes
         let delta: [u8; 80] = [
             1, 2, 3, 4, 5, 6, 7, 8, 0, 0, 6, 7, 8, 9, 10, 11, 12, 13, 0, 0, 11, 12, 13, 14, 15, 16,
             17, 18, 0, 0, 16, 17, 18, 19, 20, 21, 22, 23, 0, 0, 21, 22, 23, 24, 25, 26, 27, 28, 0,
             0, 26, 27, 28, 29, 30, 31, 32, 33, 0, 0, 31, 32, 33, 34, 35, 36, 37, 38, 0, 0, 36, 37,
             38, 39, 40, 41, 42, 43, 0, 0,
         ];
-        let mut midi_note_to_pads = (0..99)
-            .map(|_| (None, None))
-            .collect::<Vec<(Option<u8>, Option<u8>)>>();
+
         // The middle key in this scheme is 34.  Middle C is MIDI 60
         // So adjustment...
-        let adj_note = root_note - 34;
+        let adj_note = root_note - 24;
+
         let mut i: u8 = 11;
+
         for d in delta {
+            // `i` is the number for a pad.  No pads 10, 20,
+            // 30,... and pads 19, 29, 39,... are control pads
             if i % 10 != 0 && i % 10 != 9 {
-                // `i` is the number for a pad.  No pads 10, 20,... and pads 19, 29,... are control pads
                 let midi_note = d + p + adj_note;
-                // eprintln!(
-                //     "pad({}) -> note({}): d({}) + p({}) + adj_note({}).  root_note({})",
-                //     i, midi_note, d, p, adj_note, root_note,
-                // );
-                // Incoming MIDI `i` becomes `pad`.  E.g. MIDI == 32
-                // print!("pad({}) i({}) ", pad, i);
+
+                // Incoming MIDI signals `i` mapped to output MIDI `midi_note`.
                 midi_map[i as usize] = midi_note;
+
                 let row = i / 10;
                 let col = i % 10;
                 // This function returns the (at most) two pads that emit this note
