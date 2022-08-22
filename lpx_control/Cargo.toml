@@ -7,4 +7,5 @@ edition = "2021"
 
 [dependencies]
 midi_connection = { path = "../midi_connection" }
-midir = { path = "../../../midir" }
+midir = { git = "https://github.com/worikgh/midir" }
+
