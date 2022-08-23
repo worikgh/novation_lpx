@@ -60,3 +60,8 @@ midi_sink_synth:yoshimi-INSTANCE_03:input
 
 `midi_source_lpx` and `midi_sink_lpx` will always be the same.
 
+### Demo
+
+In the `demo` directory is a Perl script to run `lpx_manager`.  It has all the files, including compiled binaries in that directory.
+
+The MIDI connections must be edited by hand because `yoshimi` connects itself tto the LPX directly.  Use a MIDI editor (like [qjackctl](https://qjackctl.sourceforge.io/) to clean up the MIDI otherwise there will be two notes playing for each pad.
