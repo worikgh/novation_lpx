@@ -93,7 +93,7 @@ impl Adapter {
             // `i` is the number for a pad.  No pads 10, 20,
             // 30,... and pads 19, 29, 39,... are control pads
             if i % 10 != 0 && i % 10 != 9 {
-                let midi_note = d + p + adj_note;
+                let midi_note = d + adj_note;
 
                 // Incoming MIDI signals `i` mapped to output MIDI `midi_note`.
                 midi_map[i as usize] = midi_note;
