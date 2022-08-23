@@ -70,6 +70,10 @@ midi_sink_synth:yoshimi-INSTANCE_03:input
 
 ### Demo
 
-In the `demo` directory is a Perl script to run `lpx_manager`.  It has all the files, including compiled binaries in that directory.
+In the `demo` directory is a Perl script to run `lpx_manager`.  It has all the files, including compiled binaries (for Raspberry PI) in that directory.  It does depend on [yoshimi](https://yoshimi.sourceforge.io/) being installed.  
 
-The MIDI connections must be edited by hand because `yoshimi` connects itself tto the LPX directly.  Use a MIDI editor (like [qjackctl](https://qjackctl.sourceforge.io/) to clean up the MIDI otherwise there will be two notes playing for each pad.
+The main file is `lpx_manager.pl` and it shoud be enough to get you started.
+
+The MIDI connections must be edited by hand because `yoshimi` connects itself tto the LPX directly.  Use a MIDI editor (like [qjackctl](https://qjackctl.sourceforge.io/)) to clean up the MIDI otherwise there will be two notes playing for each pad.
+
+The compiled binaries (`lpx_manager` and `lpx_mode`) must be moved into `demo` directory by hand.
