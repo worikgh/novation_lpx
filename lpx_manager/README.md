@@ -19,6 +19,14 @@ columns, a row down.
 
 Equivalently the notes of the three right columns are repeated o the three left columns a row up.
 
+## Author
+
+Worik Stanton
+
+Email: root@worik.org
+
+I would like to hear from you!
+
 ## Building
 
 In the root directory of this repository `novation_lpx/` run: `cargo build --release`
